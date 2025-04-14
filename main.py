@@ -2,7 +2,7 @@
 import os
 import pygame
 import random
-import stations
+import sections
 
 # Basic Setup
 pygame.init()
@@ -13,36 +13,19 @@ screen = pygame.display.set_mode((WIDTH, HEIGHT))
 pygame.display.set_caption('Flatbread Fiasco!')
 
 ### --- Graphics --- ###
-# Constant Graphics
-logo = pygame.image.load("graphics/logo.png")
-# Title graphics
-title_title = pygame.font.SysFont("Arial", 100)
-title_txtsurf = title_title.render("Placeholder", True, (255, 255, 255, 255))
-new_button = pygame.Rect((WIDTH*.1, HEIGHT//3, 200, 200))
-load_button = pygame.Rect((WIDTH*.75, HEIGHT//3, 200, 200))
 
 # Visibility Variables
 show_title = True
 show_game = False
 
-# Functions
-def title():
-    global logo
-    screen.fill((255, 120, 120, 200))
-    logo = pygame.transform.scale(logo, (620, 500))
-    screen.blit(logo, (WIDTH//4, HEIGHT//5))
-    screen.blit(title_txtsurf, (WIDTH//3, HEIGHT//15))
-    pygame.draw.rect(screen, (255, 255, 255, 255), new_button, 400, 20)
-    pygame.draw.rect(screen, (255, 255, 255, 255), load_button, 400, 20)
-
 # Main Loop
 while run:
     # Check Visibility
     if show_title:
-        title()
+        buttons = sections.title()
 
     elif show_game:
-        stations.order_screen()
+        sections.order_screen()
 
     # Mouse Position
     pos = pygame.mouse.get_pos()
@@ -55,7 +38,7 @@ while run:
         # Mouse Click Check
         elif event.type == pygame.MOUSEBUTTONDOWN:
             if show_title:
-                if new_button.collidepoint(pos):
+                if buttons[0].collidepoint(pos):
                     show_title = False
                     show_game = True
 
