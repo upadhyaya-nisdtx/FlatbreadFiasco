@@ -17,6 +17,13 @@ pygame.display.set_caption('Flatbread Fiasco!')
 # Visibility Variables
 show_title = True
 show_game = False
+show_order = False
+show_make = False
+show_bake = False
+show_deliver = False
+
+# Misc
+toggles = []
 
 # Main Loop
 while run:
@@ -25,7 +32,9 @@ while run:
         buttons = sections.title()
 
     elif show_game:
-        sections.order_screen()
+        if show_order:
+            sections.order_screen()
+        toggles = sections.toggle()
 
     # Mouse Position
     pos = pygame.mouse.get_pos()
@@ -38,9 +47,18 @@ while run:
         # Mouse Click Check
         elif event.type == pygame.MOUSEBUTTONDOWN:
             if show_title:
-                if buttons[0].collidepoint(pos):
+                if buttons[0].get_rect(topleft=(WIDTH*.03, HEIGHT//2)).collidepoint(pos):
                     show_title = False
                     show_game = True
+                    show_order = True
+                elif buttons[1].get_rect(topleft=(WIDTH*.73, HEIGHT//2)).collidepoint(pos):
+                    show_title = False
+                    show_game = True
+                    show_order = True
+            if show_game:
+                for toggle in toggles:
+                    if toggle.get_rect(topleft=()).collidepoint(pos):
+                        print("toggle")
 
     # Display Update
     pygame.display.update()
