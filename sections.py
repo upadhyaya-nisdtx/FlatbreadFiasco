@@ -2,6 +2,7 @@
 import os
 import random
 import pygame
+import customer
 
 # Basic Setup
 pygame.init()
@@ -28,7 +29,7 @@ def title():
 toggle_bar = pygame.image.load("graphics/top_bar.png")
 order_toggle = pygame.image.load("graphics/order_screen_toggle.png")
 order_toggle = pygame.transform.scale(order_toggle, (100, 100))
-create_toggle = pygame.image.load("graphics/create_screen_toggle.png")
+create_toggle = pygame.image.load("graphics/make_screen_toggle.png")
 create_toggle = pygame.transform.scale(create_toggle, (100, 100))
 bake_toggle = pygame.image.load("graphics/bake_screen_toggle.png")
 bake_toggle = pygame.transform.scale(bake_toggle, (100, 100))
@@ -47,9 +48,11 @@ def toggle():
 
 # Order Graphics
 order_screen_image = pygame.image.load("graphics/order_screen.jpg")
-def order_screen():
+def order_screen(customers):
     screen.fill((0, 0, 0, 0))
     screen.blit(order_screen_image, (0, 0))
+    for item in customers:
+        screen.blit(item.image, (item.pos[0], item.pos[1]))
 
 # Make Graphics
 make_screen_image = pygame.image.load("graphics/make_screen.png")
@@ -68,5 +71,13 @@ def deliver_screen():
     screen.fill((0, 0, 0, 0))
 
 # Settings Graphics
+settings_screen_image = pygame.image.load("graphics/settings_screen.png")
+quit_title = pygame.font.SysFont("Arial", 50)
+quit_txtsurf = quit_title.render("Quit", True, (0, 0, 0))
+quit_button = pygame.Rect((WIDTH*.05, HEIGHT*.25, 50, 50))
 def settings_screen():
     screen.fill((0, 0, 0, 0))
+    screen.blit(settings_screen_image, (0, 50))
+    screen.blit(quit_txtsurf, (WIDTH*.1, HEIGHT*.25))
+    pygame.draw.rect(screen, (255, 255, 255, 255), quit_button, 100, 100)
+    return quit_button

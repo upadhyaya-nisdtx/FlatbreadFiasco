@@ -1,8 +1,7 @@
 # Main File
-import os
 import pygame
-import random
 import sections
+from customer import customer
 
 # Basic Setup
 pygame.init()
@@ -28,18 +27,22 @@ show_bake = False
 show_deliver = False
 show_settings = False
 
-def visible_station(show_variable):
+def visible_station(show_variable, boolean=True):
     global show_order, show_make, show_bake, show_deliver, show_settings
     show_order = False
     show_make = False
     show_bake = False
     show_deliver = False
     show_settings = False
-    show_variable = True
+    show_variable = boolean
     return show_variable
 
 # Misc
 toggles = sections.toggle()
+quit_button = sections.settings_screen()
+customers = []
+time_1 = pygame.time.get_ticks()
+time_2 = 0
 
 # Main Loop
 while run:
@@ -47,8 +50,15 @@ while run:
     if show_title:
         buttons = sections.title()
     elif show_game:
+        # Time Check
+        time_2 = pygame.time.get_ticks()
+        if time_2 - time_1 >= 6000 and len(customers) <= 4:
+            customers.append(customer())
+            time_1 = pygame.time.get_ticks()
+            for i in range(len(customers)):
+                customers[i].set_x(i * 200)
         if show_order:
-            sections.order_screen()
+            sections.order_screen(customers)
         elif show_make:
             sections.make_screen()
         elif show_bake:
@@ -56,7 +66,7 @@ while run:
         elif show_deliver:
             sections.deliver_screen()
         elif show_settings:
-            sections.settings_screen()
+            quit_button = sections.settings_screen()
         toggles = sections.toggle()
 
     # Mouse Position
@@ -93,6 +103,11 @@ while run:
                     show_deliver = visible_station(show_deliver)
                 elif toggles[4].get_rect(topleft=(WIDTH*.8, 0)).collidepoint(pos):
                     show_settings = visible_station(show_settings)
+                # Settings Check
+                if show_settings:
+                    if quit_button.collidepoint(pos):
+                        show_settings = visible_station(show_settings, False)
+                        show_title = True
 
 
     # Display Update
