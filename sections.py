@@ -34,16 +34,39 @@ bake_toggle = pygame.image.load("graphics/bake_screen_toggle.png")
 bake_toggle = pygame.transform.scale(bake_toggle, (100, 100))
 deliver_toggle = pygame.image.load("graphics/deliver_screen_toggle.png")
 deliver_toggle = pygame.transform.scale(deliver_toggle, (100, 100))
+settings_toggle = pygame.image.load("graphics/settings_toggle.png")
+settings_toggle = pygame.transform.scale(settings_toggle, (100, 100))
 def toggle():
     screen.blit(toggle_bar, (0, -150))
     screen.blit(order_toggle, (WIDTH*.3, 0))
     screen.blit(create_toggle, (WIDTH*.4, 0))
     screen.blit(bake_toggle, (WIDTH*.5, 0))
     screen.blit(deliver_toggle, (WIDTH*.6, 0))
-    return order_toggle, create_toggle, bake_toggle, deliver_toggle
+    screen.blit(settings_toggle, (WIDTH * .8, 0))
+    return order_toggle, create_toggle, bake_toggle, deliver_toggle, settings_toggle
 
 # Order Graphics
 order_screen_image = pygame.image.load("graphics/order_screen.jpg")
 def order_screen():
     screen.fill((0, 0, 0, 0))
     screen.blit(order_screen_image, (0, 0))
+
+# Make Graphics
+make_screen_image = pygame.image.load("graphics/make_screen.png")
+def make_screen():
+    screen.fill((0, 0, 0, 0))
+    screen.blit(make_screen_image, (0, 0))
+
+# Bake Graphics
+bake_screen_image = pygame.image.load("graphics/bake_screen.png")
+def bake_screen():
+    screen.fill((0, 0, 0, 0))
+    screen.blit(bake_screen_image, (0, 0))
+
+# Deliver Graphics
+def deliver_screen():
+    screen.fill((0, 0, 0, 0))
+
+# Settings Graphics
+def settings_screen():
+    screen.fill((0, 0, 0, 0))
