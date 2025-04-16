@@ -28,7 +28,7 @@ def title():
 toggle_bar = pygame.image.load("graphics/top_bar.png")
 order_toggle = pygame.image.load("graphics/order_screen_toggle.png")
 order_toggle = pygame.transform.scale(order_toggle, (100, 100))
-create_toggle = pygame.image.load("graphics/create_screen_toggle.png")
+create_toggle = pygame.image.load("graphics/make_screen_toggle.png")
 create_toggle = pygame.transform.scale(create_toggle, (100, 100))
 bake_toggle = pygame.image.load("graphics/bake_screen_toggle.png")
 bake_toggle = pygame.transform.scale(bake_toggle, (100, 100))
