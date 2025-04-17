@@ -1,6 +1,4 @@
 # Stations
-import os
-import random
 import pygame
 import customer
 
@@ -52,6 +50,12 @@ def order_screen(customer_list_1, customer_list_2):
     screen.fill((0, 0, 0, 0))
     screen.blit(order_screen_image, (0, 0))
     customer.place_customers(customer_list_1, customer_list_2)
+
+order_event_image = pygame.image.load("graphics/order_event.png")
+def order_event(customer):
+    screen.fill((0, 0, 0, 0))
+    screen.blit(order_event_image, (0, 0))
+    screen.blit(customer.image, (WIDTH*.4, HEIGHT*.6))
 
 # Make Graphics
 make_screen_image = pygame.image.load("graphics/make_screen.png")
