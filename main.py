@@ -26,14 +26,16 @@ show_make = False
 show_bake = False
 show_deliver = False
 show_settings = False
+show_order_event = False
 
 def visible_station(show_variable, boolean=True):
-    global show_order, show_make, show_bake, show_deliver, show_settings
+    global show_order, show_make, show_bake, show_deliver, show_settings, show_order_event
     show_order = False
     show_make = False
     show_bake = False
     show_deliver = False
     show_settings = False
+    show_order_event = False
     show_variable = boolean
     return show_variable
 
@@ -42,14 +44,18 @@ toggles = sections.toggle()
 quit_button = sections.settings_screen()
 ordering_customers = []
 waiting_customers = []
-time_1 = pygame.time.get_ticks()
+showing_customer = None
+time_1 = 0
 time_2 = 0
+time_3 = 0
 
 # Main Loop
 while run:
     # Check Visibility
     if show_title:
         buttons = sections.title()
+        time_1 = 0
+        time_2 = 0
     elif show_game:
         # Time Check
         time_2 = pygame.time.get_ticks()
@@ -63,6 +69,10 @@ while run:
                 ordering_customers[i].set_x(WIDTH*.2 + (i * 200))
             for i in range(len(waiting_customers)):
                 waiting_customers[i].set_x(WIDTH*.2 + (i * 200))
+        elif show_order_event:
+            sections.order_event(item)
+            if time_2 - time_3 == 6000:
+                show_order = visible_station(show_order)
         elif show_make:
             sections.make_screen()
         elif show_bake:
@@ -71,7 +81,8 @@ while run:
             sections.deliver_screen()
         elif show_settings:
             quit_button = sections.settings_screen()
-        toggles = sections.toggle()
+        if not show_order_event:
+            toggles = sections.toggle()
 
     # Mouse Position
     pos = pygame.mouse.get_pos()
@@ -87,10 +98,12 @@ while run:
             # If TITLE is visible
             if show_title:
                 if buttons[0].get_rect(topleft=(WIDTH*.03, HEIGHT//2)).collidepoint(pos):
+                    time_1 = pygame.time.get_ticks()
                     show_title = False
                     show_game = True
                     show_order = True
                 elif buttons[1].get_rect(topleft=(WIDTH*.73, HEIGHT//2)).collidepoint(pos):
+                    time_1 = pygame.time.get_ticks()
                     show_title = False
                     show_game = True
                     show_order = True
@@ -116,15 +129,16 @@ while run:
                 elif show_order:
                     for item in ordering_customers:
                         if item.image.get_rect(topleft=item.pos).collidepoint(pos):
+                            showing_customer = item
                             item.set_y(HEIGHT*.2 + HEIGHT *.3)
                             item.set_x(WIDTH*.2 + (len(ordering_customers) - 1) * 100)
                             waiting_customers.append(item)
                             ordering_customers.remove(item)
                             place_customers(ordering_customers, waiting_customers)
                             item.set_order()
-                            print(item.order.toppings)
-                            print(item.order.sauce)
-                            print(item.order.cheese)
+                            time_3 = pygame.time.get_ticks()
+                            sections.order_event(item)
+                            show_order_event = visible_station(show_order_event)
 
 
     # Display Update
