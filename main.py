@@ -1,7 +1,7 @@
 # Main File
 import pygame
 import sections
-from customer import customer
+from customer import customer, place_customers
 
 # Basic Setup
 pygame.init()
@@ -40,7 +40,8 @@ def visible_station(show_variable, boolean=True):
 # Misc
 toggles = sections.toggle()
 quit_button = sections.settings_screen()
-customers = []
+ordering_customers = []
+waiting_customers = []
 time_1 = pygame.time.get_ticks()
 time_2 = 0
 
@@ -52,13 +53,16 @@ while run:
     elif show_game:
         # Time Check
         time_2 = pygame.time.get_ticks()
-        if time_2 - time_1 >= 6000 and len(customers) <= 4:
-            customers.append(customer())
+        if time_2 - time_1 >= 6000 and (len(ordering_customers) + len(waiting_customers)) <= 4:
+            temp = customer()
+            ordering_customers.append(temp)
             time_1 = pygame.time.get_ticks()
-            for i in range(len(customers)):
-                customers[i].set_x(i * 200)
         if show_order:
-            sections.order_screen(customers)
+            sections.order_screen(ordering_customers,waiting_customers)
+            for i in range(len(ordering_customers)):
+                ordering_customers[i].set_x(WIDTH*.2 + (i * 200))
+            for i in range(len(waiting_customers)):
+                waiting_customers[i].set_x(WIDTH*.2 + (i * 200))
         elif show_make:
             sections.make_screen()
         elif show_bake:
@@ -108,6 +112,19 @@ while run:
                     if quit_button.collidepoint(pos):
                         show_settings = visible_station(show_settings, False)
                         show_title = True
+                # Customer Click Check
+                elif show_order:
+                    for item in ordering_customers:
+                        if item.image.get_rect(topleft=item.pos).collidepoint(pos):
+                            item.set_y(HEIGHT*.2 + HEIGHT *.3)
+                            item.set_x(WIDTH*.2 + (len(ordering_customers) - 1) * 100)
+                            waiting_customers.append(item)
+                            ordering_customers.remove(item)
+                            place_customers(ordering_customers, waiting_customers)
+                            item.set_order()
+                            print(item.order.toppings)
+                            print(item.order.sauce)
+                            print(item.order.cheese)
 
 
     # Display Update

@@ -48,11 +48,10 @@ def toggle():
 
 # Order Graphics
 order_screen_image = pygame.image.load("graphics/order_screen.jpg")
-def order_screen(customers):
+def order_screen(customer_list_1, customer_list_2):
     screen.fill((0, 0, 0, 0))
     screen.blit(order_screen_image, (0, 0))
-    for item in customers:
-        screen.blit(item.image, (item.pos[0], item.pos[1]))
+    customer.place_customers(customer_list_1, customer_list_2)
 
 # Make Graphics
 make_screen_image = pygame.image.load("graphics/make_screen.png")
