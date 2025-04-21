@@ -1,5 +1,12 @@
 # Order file
 import random
+import pygame
+
+# Basic Setup
+pygame.init()
+WIDTH = 1200
+HEIGHT = 800
+screen = pygame.display.set_mode((WIDTH, HEIGHT))
 
 toppings = ["Pepperoni", "Mushroom", "Onion", "Pineapple"]
 sauces = ["Tomato Sauce", "Alfredo Sauce", "BBQ Sauce"]
@@ -16,3 +23,4 @@ class order():
         self.toppings = temp_list
         self.sauce = random.choice(sauces)
         self.cheese = random.choice(cheeses)
+        self.image = pygame.image.load("graphics/ticket.png")

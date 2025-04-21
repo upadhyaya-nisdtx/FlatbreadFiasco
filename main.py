@@ -48,6 +48,7 @@ showing_customer = None
 time_1 = 0
 time_2 = 0
 time_3 = 0
+temp_customer = None
 
 # Main Loop
 while run:
@@ -70,9 +71,10 @@ while run:
             for i in range(len(waiting_customers)):
                 waiting_customers[i].set_x(WIDTH*.2 + (i * 200))
         elif show_order_event:
-            sections.order_event(item)
-            if time_2 - time_3 == 6000:
+            temp_customer = sections.order_event(item)
+            if time_2 - time_3 >= 3000:
                 show_order = visible_station(show_order)
+                temp_customer.image = pygame.transform.scale(temp_customer.image, (174, 395))
         elif show_make:
             sections.make_screen()
         elif show_bake:

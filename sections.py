@@ -1,6 +1,7 @@
 # Stations
 import pygame
 import customer
+import pizza
 
 # Basic Setup
 pygame.init()
@@ -54,8 +55,11 @@ def order_screen(customer_list_1, customer_list_2):
 order_event_image = pygame.image.load("graphics/order_event.png")
 def order_event(customer):
     screen.fill((0, 0, 0, 0))
-    screen.blit(order_event_image, (0, 0))
-    screen.blit(customer.image, (WIDTH*.4, HEIGHT*.6))
+    screen.blit(order_event_image, (0, -10))
+    screen.blit(customer.image, (WIDTH*.15, HEIGHT*.3))
+    customer.image = pygame.transform.scale(customer.image, (374, 795))
+    screen.blit(customer.order.image, (WIDTH*.6, HEIGHT*.3))
+    return customer
 
 # Make Graphics
 make_screen_image = pygame.image.load("graphics/make_screen.png")
@@ -69,9 +73,11 @@ def bake_screen():
     screen.fill((0, 0, 0, 0))
     screen.blit(bake_screen_image, (0, 0))
 
+deliver_screen_image = pygame.image.load("graphics/deliver_screen.png")
 # Deliver Graphics
 def deliver_screen():
     screen.fill((0, 0, 0, 0))
+    screen.blit(deliver_screen_image, (0, 0))
 
 # Settings Graphics
 settings_screen_image = pygame.image.load("graphics/settings_screen.png")
