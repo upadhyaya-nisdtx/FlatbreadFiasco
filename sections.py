@@ -58,7 +58,10 @@ def order_event(customer):
     screen.blit(order_event_image, (0, -10))
     screen.blit(customer.image, (WIDTH*.15, HEIGHT*.3))
     customer.image = pygame.transform.scale(customer.image, (374, 795))
-    screen.blit(customer.order.image, (WIDTH*.6, HEIGHT*.3))
+    customer.order.image = pygame.transform.scale(customer.order.image, (400, 700))
+    screen.blit(customer.order.image, (WIDTH*.6, HEIGHT*.05))
+    pygame.time.wait(500)
+
     return customer
 
 # Make Graphics

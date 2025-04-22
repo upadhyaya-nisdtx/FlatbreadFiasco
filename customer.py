@@ -1,4 +1,5 @@
 # Customer File
+import os
 import pygame
 from generate_order import order
 
@@ -15,8 +16,18 @@ def place_customers(customer_list_1, customer_list_2):
         screen.blit(item.image, item.pos)
 
 class customer():
+    index = 0
+    dir_list = os.listdir("customer_graphics/")
+
+    @classmethod
+    def change_index(cls):
+        cls.index += 1
+        if cls.index >= len(cls.dir_list):
+            cls.index = 0
+
     def __init__(self):
-        self.image = pygame.image.load("graphics/customer.png")
+        self.image = pygame.image.load("customer_graphics/" + customer.dir_list[customer.index])
+        customer.change_index()
         self.order = None
         self.pos = (WIDTH*.2, HEIGHT*.3)
 
