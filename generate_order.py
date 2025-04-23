@@ -13,8 +13,11 @@ sauces = ["Tomato Sauce", "Alfredo Sauce", "BBQ Sauce"]
 cheeses = ["Mozzarella", "Parmesan", "Provolone", "Cheddar"]
 
 class order():
+    orders = 0
+
     def __init__(self):
         num = random.randint(0, 4)
+        order.orders += 1
         temp_list = []
         for i in range(num):
             temp_item = random.choice(toppings)
@@ -23,4 +26,5 @@ class order():
         self.toppings = temp_list
         self.sauce = random.choice(sauces)
         self.cheese = random.choice(cheeses)
+        self.slices = random.randint(2, 8)
         self.image = pygame.image.load("graphics/ticket.png")
