@@ -11,6 +11,7 @@ WIDTH = 1200
 HEIGHT = 800
 screen = pygame.display.set_mode((WIDTH, HEIGHT))
 pygame.display.set_caption('Flatbread Fiasco!')
+bg_music = pygame.mixer.Sound("audio/Double Polka.mp3")
 
 ### --- Graphics --- ###
 
@@ -42,6 +43,7 @@ def visible_station(show_variable, boolean=True):
     return show_variable
 
 # Misc
+doorbell_sound = pygame.mixer.Sound("audio/doorbell.mp3")
 toggles = sections.toggle()
 quit_button = sections.settings_screen()
 ordering_customers = []
@@ -65,6 +67,7 @@ def reset():
     temp_customer = None
     pizzas = []
 
+bg_music.play(loops=-1)
 # Main Loop
 while run:
     # Check Visibility
@@ -75,7 +78,8 @@ while run:
     elif show_game:
         # Time Check
         time_2 = pygame.time.get_ticks()
-        if time_2 - time_1 >= 6000 and (len(ordering_customers) + len(waiting_customers)) <= 4:
+        if time_2 - time_1 >= 1000 and (len(ordering_customers) + len(waiting_customers)) <= 4:
+            doorbell_sound.play()
             temp = customer()
             ordering_customers.append(temp)
             time_1 = pygame.time.get_ticks()
@@ -86,7 +90,10 @@ while run:
             for i in range(len(waiting_customers)):
                 waiting_customers[i].set_x(WIDTH*.2 + (i * 200))
         elif show_order_event:
-            temp_customer = sections.order_event(item)
+            try:
+                temp_customer = sections.order_event(item)
+            except:
+                temp_customer = sections.order_event(item)
             if time_2 - time_3 >= 3000:
                 show_order = visible_station(show_order)
                 temp_customer.image = pygame.transform.scale(temp_customer.image, (174, 395))

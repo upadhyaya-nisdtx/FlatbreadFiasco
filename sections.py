@@ -61,12 +61,6 @@ def order_event(customer):
     screen.blit(order_event_image, (0, -10))
     screen.blit(customer.image, (WIDTH*.1, HEIGHT*.05))
     customer.image = pygame.transform.scale(customer.image, (474, 1095))
-
-    # SAFEGUARD
-    if not customer.order or not customer.order.image:
-        print("safe")
-        customer.order.image = pygame.image.load("graphics/ticket.png")
-
     customer.order.image = pygame.transform.scale(customer.order.image, (400, 700))
     screen.blit(customer.order.image, (WIDTH*.6, HEIGHT*.05))
     # Order Items
@@ -87,10 +81,23 @@ def order_event(customer):
 make_screen_image = pygame.image.load("graphics/make_screen.png")
 gen_pizza_toggle = pygame.image.load("graphics/make_screen_toggle.png")
 gen_pizza_toggle = pygame.transform.scale(gen_pizza_toggle, (100, 100))
+cheese_button = pygame.Rect((WIDTH*.1, HEIGHT*.5, 100, 100))
+sauce_button = pygame.Rect((WIDTH*.25, HEIGHT*.5, 100, 100))
+pepperoni_button = pygame.Rect((WIDTH*.083, HEIGHT*.7, 75, 75))
+mushroom_button = pygame.Rect((WIDTH*.153, HEIGHT*.7, 75, 75))
+onion_button = pygame.Rect((WIDTH*.223, HEIGHT*.7, 75, 75))
+pineapple_button = pygame.Rect((WIDTH*.293, HEIGHT*.7, 75, 75))
 def make_screen():
     screen.fill((0, 0, 0, 0))
     screen.blit(make_screen_image, (0, 0))
     screen.blit(gen_pizza_toggle, (WIDTH * .75, HEIGHT * .4))
+    pygame.draw.rect(screen, (210, 210, 0), cheese_button)
+    pygame.draw.rect(screen, (210, 0, 0), sauce_button)
+    pygame.draw.rect(screen, (210, 0, 0), pepperoni_button)
+    pygame.draw.rect(screen, (200, 200, 210), mushroom_button)
+    pygame.draw.rect(screen, (200, 0, 200), onion_button)
+    pygame.draw.rect(screen, (210, 210, 0), pineapple_button)
+
     return gen_pizza_toggle
 
 
