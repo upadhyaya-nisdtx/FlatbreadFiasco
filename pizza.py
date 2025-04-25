@@ -9,15 +9,15 @@ screen = pygame.display.set_mode((WIDTH, HEIGHT))
 
 class pizza():
 
-    def __init__(self, num, cheese, sauce, toppings):
+    def __init__(self, num=None, cheese=None, sauce=None, toppings=None):
         self.num = num
         self.cheese = cheese
         self.sauce = sauce
         self.toppings = toppings
-        self.draw = [pygame.draw.circle(screen, (200, 200, 0), (x, y), radius)]
 
-    def draw_pizza(self):
-        return self.draw
+    def draw_pizza(self, x, y, radius):
+        item = pygame.draw.circle(screen, (220, 200, 100), (x, y), radius)
+        return item
 
     def add_topping(self, cheese=None, sauce=None, toppings=None):
         if cheese != None:

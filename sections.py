@@ -55,11 +55,18 @@ def order_screen(customer_list_1, customer_list_2):
 
 order_event_image = pygame.image.load("graphics/order_event.png")
 order_event_font = pygame.font.SysFont("Arial", 50)
+order_event_font2 = pygame.font.SysFont("Arial", 25)
 def order_event(customer):
     screen.fill((0, 0, 0, 0))
     screen.blit(order_event_image, (0, -10))
     screen.blit(customer.image, (WIDTH*.1, HEIGHT*.05))
     customer.image = pygame.transform.scale(customer.image, (474, 1095))
+
+    # SAFEGUARD
+    if not customer.order or not customer.order.image:
+        print("safe")
+        customer.order.image = pygame.image.load("graphics/ticket.png")
+
     customer.order.image = pygame.transform.scale(customer.order.image, (400, 700))
     screen.blit(customer.order.image, (WIDTH*.6, HEIGHT*.05))
     # Order Items
@@ -67,20 +74,25 @@ def order_event(customer):
     sauce_txtsurf = order_event_font.render(customer.order.sauce, True, (0, 0, 0))
     cheese_txtsurf = order_event_font.render(customer.order.cheese, True, (0, 0, 0))
     temp_string = ", ".join(customer.order.toppings)
-    toppings_txtsurf = order_event_font.render(temp_string, True, (0, 0, 0))
+    toppings_txtsurf = order_event_font2.render(temp_string, True, (0, 0, 0))
     slices_txtsurf = order_event_font.render("Slices: " + str(customer.order.slices), True, (0, 0, 0))
     screen.blit(num_txtsurf, (WIDTH * .65, HEIGHT * .1))
     screen.blit(sauce_txtsurf, (WIDTH*.65, HEIGHT*.45))
     screen.blit(cheese_txtsurf, (WIDTH * .65, HEIGHT * .6))
-    screen.blit(toppings_txtsurf, (WIDTH * .65, HEIGHT * .2))
+    screen.blit(toppings_txtsurf, (WIDTH * .65, HEIGHT * .3))
     screen.blit(slices_txtsurf, (WIDTH * .65, HEIGHT * .75))
     return customer
 
 # Make Graphics
 make_screen_image = pygame.image.load("graphics/make_screen.png")
+gen_pizza_toggle = pygame.image.load("graphics/make_screen_toggle.png")
+gen_pizza_toggle = pygame.transform.scale(gen_pizza_toggle, (100, 100))
 def make_screen():
     screen.fill((0, 0, 0, 0))
     screen.blit(make_screen_image, (0, 0))
+    screen.blit(gen_pizza_toggle, (WIDTH * .75, HEIGHT * .4))
+    return gen_pizza_toggle
+
 
 # Bake Graphics
 bake_screen_image = pygame.image.load("graphics/bake_screen.png")

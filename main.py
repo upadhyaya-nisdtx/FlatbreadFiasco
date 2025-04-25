@@ -2,6 +2,7 @@
 import pygame
 import sections
 from customer import customer, place_customers
+from pizza import pizza
 
 # Basic Setup
 pygame.init()
@@ -17,6 +18,7 @@ pygame.display.set_caption('Flatbread Fiasco!')
 pygame.mouse.set_visible(False)
 cursor = pygame.image.load("graphics/pizza_cursor.png")
 cursor = pygame.transform.scale(cursor, (35, 35))
+click_sound = pygame.mixer.Sound("audio/click_tone")
 
 # Visibility Variables
 show_title = True
@@ -49,6 +51,19 @@ time_1 = 0
 time_2 = 0
 time_3 = 0
 temp_customer = None
+gen_pizza_toggle = sections.make_screen()
+pizzas = []
+
+def reset():
+    global ordering_customers, waiting_customers, showing_customer, time_1, time_2, time_3, temp_customer, pizzas
+    ordering_customers = []
+    waiting_customers = []
+    showing_customer = None
+    time_1 = 0
+    time_2 = 0
+    time_3 = 0
+    temp_customer = None
+    pizzas = []
 
 # Main Loop
 while run:
@@ -76,7 +91,9 @@ while run:
                 show_order = visible_station(show_order)
                 temp_customer.image = pygame.transform.scale(temp_customer.image, (174, 395))
         elif show_make:
-            sections.make_screen()
+            gen_pizza_toggle = sections.make_screen()
+            if len(pizzas) != 0:
+                pizzas[0].draw_pizza(pizzas[-3], pizzas[-2], pizzas[-1])
         elif show_bake:
             sections.bake_screen()
         elif show_deliver:
@@ -97,6 +114,8 @@ while run:
             run = False
         # Mouse Click Check
         elif event.type == pygame.MOUSEBUTTONDOWN:
+            # Sound
+            click_sound.play()
             # If TITLE is visible
             if show_title:
                 if buttons[0].get_rect(topleft=(WIDTH*.03, HEIGHT//2)).collidepoint(pos):
@@ -125,6 +144,7 @@ while run:
                 # Settings Check
                 if show_settings:
                     if quit_button.collidepoint(pos):
+                        reset()
                         show_settings = visible_station(show_settings, False)
                         show_title = True
                 # Customer Click Check
@@ -139,9 +159,13 @@ while run:
                             ordering_customers.remove(item)
                             place_customers(ordering_customers, waiting_customers)
                             item.set_order()
-                            sections.order_event(item)
+                            temp_customer = sections.order_event(item)
                             show_order_event = visible_station(show_order_event)
-
+                elif show_make:
+                    if gen_pizza_toggle.get_rect(topleft=(WIDTH * .75, HEIGHT * .4)).collidepoint(pos) and len(pizzas) == 0:
+                            pizzas.append(pizza())
+                            pizzas+= [WIDTH * .66, HEIGHT *.67, 150]
+                            pizzas[0].draw_pizza(pizzas[-3], pizzas[-2], pizzas[-1])
 
     # Display Update
     pygame.display.update()

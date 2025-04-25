@@ -2,6 +2,7 @@
 import os
 import pygame
 from generate_order import order
+import random
 
 # Basic Setup
 pygame.init()
@@ -18,6 +19,7 @@ def place_customers(customer_list_1, customer_list_2):
 class customer():
     index = 0
     dir_list = os.listdir("customer_graphics/")
+    random.shuffle(dir_list)
 
     @classmethod
     def change_index(cls):
