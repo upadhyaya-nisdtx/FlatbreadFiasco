@@ -103,10 +103,12 @@ def make_screen():
 
 # Bake Graphics
 bake_screen_image = pygame.image.load("graphics/bake_screen.png")
-def bake_screen():
+def bake_screen(current_pizza, selected=False):
     screen.fill((0, 0, 0, 0))
     screen.blit(bake_screen_image, (0, 0))
-
+    if not selected:
+        current_pizza.change_position(WIDTH*0.08, HEIGHT*.7, 200)
+    return current_pizza
 deliver_screen_image = pygame.image.load("graphics/deliver_screen.png")
 # Deliver Graphics
 def deliver_screen():

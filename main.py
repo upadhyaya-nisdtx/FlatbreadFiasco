@@ -56,6 +56,7 @@ temp_customer = None
 create_toggles = sections.make_screen()
 current_pizza = None
 pizza_list = []
+selected = False
 
 def reset():
     global ordering_customers, waiting_customers, showing_customer, time_1, time_2, time_3, temp_customer, current_pizza, pizza_list
@@ -68,6 +69,7 @@ def reset():
     temp_customer = None
     current_pizza = None
     pizza_list = []
+    selected = False
 
 bg_music.play(loops=-1)
 # Main Loop
@@ -104,9 +106,15 @@ while run:
             if current_pizza != None:
                 current_pizza.draw_pizza()
         elif show_bake:
-            sections.bake_screen()
+            current_pizza = sections.bake_screen(current_pizza, selected)
+            if current_pizza != None:
+                current_pizza.draw_pizza()
+            if selected:
+                current_pizza.change_position(pos[0], pos[1], 200)
         elif show_deliver:
             sections.deliver_screen()
+            if current_pizza != None:
+                current_pizza.draw_pizza()
         elif show_settings:
             quit_button = sections.settings_screen()
         if not show_order_event:
@@ -179,13 +187,17 @@ while run:
                     elif create_toggles[2].get_rect(topleft=(WIDTH * .18, HEIGHT * .53)).collidepoint(pos) and current_pizza != None:
                         current_pizza.add_topping(sauce=True)
                     elif create_toggles[3].get_rect(topleft=(WIDTH*.27, HEIGHT*.53)).collidepoint(pos) and current_pizza != None:
-                        print("pepperoni")
+                        current_pizza.add_topping(toppings="pepperoni")
                     elif create_toggles[4].get_rect(topleft=(WIDTH*.09, HEIGHT*.67)).collidepoint(pos) and current_pizza != None:
-                        print("mushroom")
+                        current_pizza.add_topping(toppings="mushroom")
                     elif create_toggles[5].get_rect(topleft=(WIDTH*.18, HEIGHT*.67)).collidepoint(pos) and current_pizza != None:
-                        print("onion")
+                        current_pizza.add_topping(toppings="onion")
                     elif create_toggles[6].get_rect(topleft=(WIDTH*.27, HEIGHT*.67)).collidepoint(pos) and current_pizza != None:
-                        print("pineapple")
+                        current_pizza.add_topping(toppings="pineapple")
+                elif show_bake:
+                    if current_pizza != None:
+                        selected = True
+
 
     # Display Update
     pygame.display.update()
