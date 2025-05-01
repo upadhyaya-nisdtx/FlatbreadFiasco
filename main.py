@@ -3,6 +3,7 @@ import pygame
 import sections
 from customer import customer, place_customers
 from pizza import pizza
+import generate_order
 
 # Basic Setup
 pygame.init()
@@ -59,7 +60,7 @@ pizza_list = []
 selected = False
 
 def reset():
-    global ordering_customers, waiting_customers, showing_customer, time_1, time_2, time_3, temp_customer, current_pizza, pizza_list
+    global ordering_customers, waiting_customers, showing_customer, time_1, time_2, time_3, temp_customer, current_pizza, pizza_list, selected
     ordering_customers = []
     waiting_customers = []
     showing_customer = None
@@ -82,7 +83,7 @@ while run:
     elif show_game:
         # Time Check
         time_2 = pygame.time.get_ticks()
-        if time_2 - time_1 >= 6000 and (len(ordering_customers) + len(waiting_customers)) <= 4:
+        if time_2 - time_1 >= 1000 and (len(ordering_customers) + len(waiting_customers)) <= 4:
             doorbell_sound.play()
             temp = customer()
             ordering_customers.append(temp)
@@ -94,17 +95,16 @@ while run:
             for i in range(len(waiting_customers)):
                 waiting_customers[i].set_x(WIDTH*.2 + (i * 200))
         elif show_order_event:
-            try:
-                temp_customer = sections.order_event(item)
-            except:
-                temp_customer = sections.order_event(item)
+            temp_customer = sections.order_event(item)
             if time_2 - time_3 >= 3000:
                 show_order = visible_station(show_order)
                 temp_customer.image = pygame.transform.scale(temp_customer.image, (174, 395))
         elif show_make:
             create_toggles = sections.make_screen()
             if current_pizza != None:
+                current_pizza.change_position(WIDTH * .66, WIDTH * .445, 150)
                 current_pizza.draw_pizza()
+
         elif show_bake:
             current_pizza = sections.bake_screen(current_pizza, selected)
             if current_pizza != None:
@@ -114,6 +114,7 @@ while run:
         elif show_deliver:
             sections.deliver_screen()
             if current_pizza != None:
+                current_pizza.change_position(WIDTH * .52, WIDTH * .375, 275)
                 current_pizza.draw_pizza()
         elif show_settings:
             quit_button = sections.settings_screen()
@@ -175,7 +176,7 @@ while run:
                             waiting_customers.append(item)
                             ordering_customers.remove(item)
                             place_customers(ordering_customers, waiting_customers)
-                            item.set_order()
+                            item.order = generate_order.order()
                             temp_customer = sections.order_event(item)
                             show_order_event = visible_station(show_order_event)
                 elif show_make:
