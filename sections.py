@@ -61,7 +61,12 @@ def order_event(customer):
     screen.blit(order_event_image, (0, -10))
     screen.blit(customer.image, (WIDTH*.1, HEIGHT*.05))
     customer.image = pygame.transform.scale(customer.image, (474, 1095))
-    customer.order.image = pygame.transform.scale(customer.order.image, (400, 700))
+    # Fix Whatever the hell this is
+    try:
+        customer.order.image = pygame.transform.scale(customer.order.image, (400, 700))
+    except:
+        customer.order = generate_order.order()
+        customer.order.image = pygame.transform.scale(customer.order.image, (400, 700))
     screen.blit(customer.order.image, (WIDTH*.6, HEIGHT*.05))
     # Order Items
     num_txtsurf = order_event_font.render("Order " + str(generate_order.order.orders), True, (0, 0, 0))

@@ -58,9 +58,10 @@ create_toggles = sections.make_screen()
 current_pizza = None
 pizza_list = []
 selected = False
+available_items = []
 
 def reset():
-    global ordering_customers, waiting_customers, showing_customer, time_1, time_2, time_3, temp_customer, current_pizza, pizza_list, selected
+    global ordering_customers, waiting_customers, showing_customer, time_1, time_2, time_3, temp_customer, current_pizza, pizza_list, selected, available_items
     ordering_customers = []
     waiting_customers = []
     showing_customer = None
@@ -71,6 +72,7 @@ def reset():
     current_pizza = None
     pizza_list = []
     selected = False
+    available_items = []
 
 bg_music.play(loops=-1)
 # Main Loop
@@ -83,7 +85,7 @@ while run:
     elif show_game:
         # Time Check
         time_2 = pygame.time.get_ticks()
-        if time_2 - time_1 >= 1000 and (len(ordering_customers) + len(waiting_customers)) <= 4:
+        if time_2 - time_1 >= 6000 and (len(ordering_customers) + len(waiting_customers)) <= 4:
             doorbell_sound.play()
             temp = customer()
             ordering_customers.append(temp)
@@ -103,19 +105,19 @@ while run:
             create_toggles = sections.make_screen()
             if current_pizza != None:
                 current_pizza.change_position(WIDTH * .66, WIDTH * .445, 150)
-                current_pizza.draw_pizza()
+                available_items = current_pizza.draw_pizza()
 
         elif show_bake:
             current_pizza = sections.bake_screen(current_pizza, selected)
             if current_pizza != None:
-                current_pizza.draw_pizza()
+                available_items = current_pizza.draw_pizza(250, pos, selected)
             if selected:
                 current_pizza.change_position(pos[0], pos[1], 200)
         elif show_deliver:
             sections.deliver_screen()
             if current_pizza != None:
                 current_pizza.change_position(WIDTH * .52, WIDTH * .375, 275)
-                current_pizza.draw_pizza()
+                available_items = current_pizza.draw_pizza(400)
         elif show_settings:
             quit_button = sections.settings_screen()
         if not show_order_event:
@@ -197,7 +199,8 @@ while run:
                         current_pizza.add_topping(toppings="pineapple")
                 elif show_bake:
                     if current_pizza != None:
-                        selected = True
+                        # make selected true if pizza ic clicked
+                        pass
 
 
     # Display Update
