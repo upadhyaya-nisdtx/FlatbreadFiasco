@@ -50,6 +50,7 @@ quit_button = sections.settings_screen()
 ordering_customers = []
 waiting_customers = []
 showing_customer = None
+customer_time = 2000
 time_1 = 0
 time_2 = 0
 time_3 = 0
@@ -76,7 +77,7 @@ def save(filename, 1, 2, 3):
             saved_file.write(json_object)
 """
 def reset():
-    global ordering_customers, waiting_customers, showing_customer, time_1, time_2, time_3, temp_customer, current_pizza, pizza_list, selected, available_items, bake_x, bake_y
+    global ordering_customers, waiting_customers, showing_customer, time_1, time_2, time_3, temp_customer, current_pizza, pizza_list, selected, available_items, bake_x, bake_y, customer_time
     ordering_customers = []
     waiting_customers = []
     showing_customer = None
@@ -90,6 +91,7 @@ def reset():
     available_items = []
     bake_x = WIDTH * .08
     bake_y = HEIGHT * .7
+    customer_time = 2000
 
 bg_music.play(loops=-1)
 # Main Loop
@@ -102,11 +104,12 @@ while run:
     elif show_game:
         # Time Check
         time_2 = pygame.time.get_ticks()
-        if time_2 - time_1 >= 6000 and (len(ordering_customers) + len(waiting_customers)) <= 4:
+        if time_2 - time_1 >= customer_time and (len(ordering_customers) + len(waiting_customers)) <= 4:
             doorbell_sound.play()
             temp = customer()
             ordering_customers.append(temp)
             time_1 = pygame.time.get_ticks()
+            customer_time = 10000
         if show_order:
             selected = False
             sections.order_screen(ordering_customers,waiting_customers)
