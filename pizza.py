@@ -7,6 +7,23 @@ WIDTH = 1200
 HEIGHT = 800
 screen = pygame.display.set_mode((WIDTH, HEIGHT))
 
+class pizza_base:
+    def __init__(self, x, y, radius):
+        self.x = x
+        self.y = y
+        self.radius = radius
+        self.color = (220, 190, 100)
+
+    def draw(self, surface):
+        pygame.draw.circle(surface, self.color, (self.x, self.y), self.radius)
+
+    def move(self, dx, dy):
+        self.x = dx
+        self.y = dy
+
+    def get_rect(self):
+        return pygame.Rect(self.x - self.radius, self.y - self.radius, self.radius * 2, self.radius * 2)
+
 class pizza():
 
     def __init__(self, num=None, cheese=None, sauce=None):
@@ -17,13 +34,15 @@ class pizza():
         self.x = WIDTH * .66
         self.y = HEIGHT *.445
         self.radius = 150
+        self.base = pizza_base(self.x, self.y, self.radius)
 
     def draw_pizza(self, scale=200, pos=None, selected=False):
         available_items = []
         if pos != None and selected:
-            available_items += pygame.draw.circle(screen, (220, 190, 100), (pos[0], pos[1]), self.radius)
+            self.base.move(pos[0], pos[1])
+            available_items.append(self.base.draw(screen))
         else:
-            available_items += pygame.draw.circle(screen, (220, 190, 100), (self.x, self.y), self.radius)
+            available_items.append(self.base.draw(screen))
         if self.sauce:
             if pos != None and selected:
                 available_items += pygame.draw.circle(screen, (255, 100, 100), (pos[0], pos[1]), self.radius * .9)

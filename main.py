@@ -59,9 +59,24 @@ current_pizza = None
 pizza_list = []
 selected = False
 available_items = []
+bake_x = WIDTH * .08
+bake_y = HEIGHT * .7
+"""
+only allow 1 save file, override when making new save
+def save(filename, 1, 2, 3):
 
+        dictionary_save = {
+            "filename": filename,
+            "item1": 1,
+            "item2": 2,
+            "item3": 3
+        }
+        json_object = json.dumps(dictionary_save, indent=4)
+        with open(filename, "w") as saved_file:
+            saved_file.write(json_object)
+"""
 def reset():
-    global ordering_customers, waiting_customers, showing_customer, time_1, time_2, time_3, temp_customer, current_pizza, pizza_list, selected, available_items
+    global ordering_customers, waiting_customers, showing_customer, time_1, time_2, time_3, temp_customer, current_pizza, pizza_list, selected, available_items, bake_x, bake_y
     ordering_customers = []
     waiting_customers = []
     showing_customer = None
@@ -73,6 +88,8 @@ def reset():
     pizza_list = []
     selected = False
     available_items = []
+    bake_x = WIDTH * .08
+    bake_y = HEIGHT * .7
 
 bg_music.play(loops=-1)
 # Main Loop
@@ -91,6 +108,7 @@ while run:
             ordering_customers.append(temp)
             time_1 = pygame.time.get_ticks()
         if show_order:
+            selected = False
             sections.order_screen(ordering_customers,waiting_customers)
             for i in range(len(ordering_customers)):
                 ordering_customers[i].set_x(WIDTH*.2 + (i * 200))
@@ -102,21 +120,30 @@ while run:
                 show_order = visible_station(show_order)
                 temp_customer.image = pygame.transform.scale(temp_customer.image, (174, 395))
         elif show_make:
+            selected = False
             create_toggles = sections.make_screen()
             if current_pizza != None:
                 current_pizza.change_position(WIDTH * .66, WIDTH * .445, 150)
+                current_pizza.base.move(WIDTH * .66, WIDTH * .445)
+                current_pizza.base.radius = 150
                 available_items = current_pizza.draw_pizza()
-
         elif show_bake:
             current_pizza = sections.bake_screen(current_pizza, selected)
             if current_pizza != None:
-                available_items = current_pizza.draw_pizza(250, pos, selected)
-            if selected:
-                current_pizza.change_position(pos[0], pos[1], 200)
+                if selected:
+                    bake_x = pos[0]
+                    bake_y = pos[1]
+                current_pizza.change_position(bake_x, bake_y, 200)
+                current_pizza.base.move(bake_x, bake_y)
+                current_pizza.base.radius = 200
+                available_items = current_pizza.draw_pizza()
         elif show_deliver:
+            selected = False
             sections.deliver_screen()
             if current_pizza != None:
                 current_pizza.change_position(WIDTH * .52, WIDTH * .375, 275)
+                current_pizza.base.move(WIDTH * .52, WIDTH * .375)
+                current_pizza.base.radius = 275
                 available_items = current_pizza.draw_pizza(400)
         elif show_settings:
             quit_button = sections.settings_screen()
@@ -199,8 +226,15 @@ while run:
                         current_pizza.add_topping(toppings="pineapple")
                 elif show_bake:
                     if current_pizza != None:
-                        # make selected true if pizza ic clicked
-                        pass
+                        if current_pizza.base.get_rect().collidepoint(pos):
+                            selected = True
+        # Drag Check
+        elif event.type == pygame.MOUSEBUTTONUP:
+            # If GAME is visible
+            if show_game:
+                if show_bake:
+                    if current_pizza is not None:
+                        selected = False
 
 
     # Display Update
