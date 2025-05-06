@@ -62,6 +62,9 @@ selected = False
 available_items = []
 bake_x = WIDTH * .08
 bake_y = HEIGHT * .7
+invisible_surface = None
+invisible_rect = None
+
 """
 only allow 1 save file, override when making new save
 def save(filename, 1, 2, 3):
@@ -77,7 +80,9 @@ def save(filename, 1, 2, 3):
             saved_file.write(json_object)
 """
 def reset():
-    global ordering_customers, waiting_customers, showing_customer, time_1, time_2, time_3, temp_customer, current_pizza, pizza_list, selected, available_items, bake_x, bake_y, customer_time
+    global ordering_customers, waiting_customers, showing_customer, time_1, time_2, time_3, temp_customer
+    global current_pizza, pizza_list, selected, available_items, bake_x, bake_y, customer_time, invisible_surface
+    global invisible_rect
     ordering_customers = []
     waiting_customers = []
     showing_customer = None
@@ -92,6 +97,8 @@ def reset():
     bake_x = WIDTH * .08
     bake_y = HEIGHT * .7
     customer_time = 2000
+    invisible_surface = None
+    invisible_rect = None
 
 bg_music.play(loops=-1)
 # Main Loop
@@ -131,7 +138,10 @@ while run:
                 current_pizza.base.radius = 150
                 available_items = current_pizza.draw_pizza()
         elif show_bake:
-            current_pizza = sections.bake_screen(current_pizza, selected)
+            bake_items = sections.bake_screen(current_pizza, selected)
+            current_pizza = bake_items[0]
+            invisible_surface = bake_items[1]
+            invisible_rect = bake_items[2]
             if current_pizza != None:
                 if selected:
                     bake_x = pos[0]
@@ -238,6 +248,8 @@ while run:
                 if show_bake:
                     if current_pizza is not None:
                         selected = False
+                        if current_pizza.base.get_rect().colliderect(invisible_rect):
+                            current_pizza.base.baked = True
 
 
     # Display Update

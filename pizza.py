@@ -12,10 +12,15 @@ class pizza_base:
         self.x = x
         self.y = y
         self.radius = radius
-        self.color = (220, 190, 100)
+        self.color1 = (220, 190, 100)
+        self.color2 = (200, 160, 100)
+        self.baked = False
 
     def draw(self, surface):
-        pygame.draw.circle(surface, self.color, (self.x, self.y), self.radius)
+        if self.baked:
+            pygame.draw.circle(surface, self.color2, (self.x, self.y), self.radius)
+        else:
+            pygame.draw.circle(surface, self.color1, (self.x, self.y), self.radius)
 
     def move(self, dx, dy):
         self.x = dx

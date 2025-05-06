@@ -108,17 +108,22 @@ def make_screen():
 
 # Bake Graphics
 bake_screen_image = pygame.image.load("graphics/bake_screen.png")
+invisible_surface = pygame.Surface((WIDTH * .355, HEIGHT *.535), pygame.SRCALPHA)
+invisible_rect = pygame.Rect(WIDTH * 0.31, HEIGHT * 0.39, WIDTH * .355, HEIGHT *.535)
+invisible_surface.fill((0, 0, 0, 0))
 def bake_screen(current_pizza, selected=False):
     screen.fill((0, 0, 0, 0))
     screen.blit(bake_screen_image, (0, 0))
+    screen.blit(invisible_surface, (WIDTH * 0.31, HEIGHT * 0.39))
     if not selected:
         try:
             current_pizza.change_position(WIDTH*0.08, HEIGHT*.7, 200)
         except:
             pass
-    return current_pizza
-deliver_screen_image = pygame.image.load("graphics/deliver_screen.png")
+    return current_pizza, invisible_surface, invisible_rect
+
 # Deliver Graphics
+deliver_screen_image = pygame.image.load("graphics/deliver_screen.png")
 def deliver_screen():
     screen.fill((0, 0, 0, 0))
     screen.blit(deliver_screen_image, (0, 0))
