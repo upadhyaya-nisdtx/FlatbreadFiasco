@@ -43,7 +43,3 @@ class customer():
         if self.order != None:
             return
         self.order = order()
-
-
-
-

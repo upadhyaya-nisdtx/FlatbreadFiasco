@@ -37,13 +37,17 @@ deliver_toggle = pygame.image.load("graphics/deliver_screen_toggle.png")
 deliver_toggle = pygame.transform.scale(deliver_toggle, (100, 100))
 settings_toggle = pygame.image.load("graphics/settings_toggle.png")
 settings_toggle = pygame.transform.scale(settings_toggle, (100, 100))
-def toggle():
+def toggle(customer_list=[]):
     screen.blit(toggle_bar, (0, -150))
     screen.blit(order_toggle, (WIDTH*.3, 0))
     screen.blit(create_toggle, (WIDTH*.4, 0))
     screen.blit(bake_toggle, (WIDTH*.5, 0))
     screen.blit(deliver_toggle, (WIDTH*.6, 0))
     screen.blit(settings_toggle, (WIDTH * .8, 0))
+    interval = 0
+    for i in range(len(customer_list)):
+        customer_list[i] = draw_ticket(customer_list[i], 1, interval, i + 1)
+        interval += .05
     return order_toggle, create_toggle, bake_toggle, deliver_toggle, settings_toggle
 
 # Order Graphics
@@ -53,6 +57,42 @@ def order_screen(customer_list_1, customer_list_2):
     screen.blit(order_screen_image, (0, 0))
     customer.place_customers(customer_list_1, customer_list_2)
 
+# Ticket Graphics
+def draw_ticket(customer, section, interval=0, num=0):
+    # Small View
+    if section == 1:
+        try:
+            customer.order.image = pygame.transform.scale(customer.order.image, (50, 100))
+        except:
+            customer.order = generate_order.order()
+            customer.order.image = pygame.transform.scale(customer.order.image, (50, 100))
+        screen.blit(customer.order.image, (WIDTH * interval, HEIGHT * .01))
+        # Order Items
+        num_txtsurf = order_event_font.render(str(num), True, (0, 0, 0))
+        screen.blit(num_txtsurf, ((WIDTH * interval) + .03, HEIGHT * .02))
+    # Order Event View
+    elif section == 2:
+        try:
+            customer.order.image = pygame.transform.scale(customer.order.image, (400, 700))
+        except:
+            customer.order = generate_order.order()
+            customer.order.image = pygame.transform.scale(customer.order.image, (400, 700))
+        screen.blit(customer.order.image, (WIDTH*.6, HEIGHT*.05))
+        # Order Items
+        num_txtsurf = order_event_font.render("Order " + str(generate_order.order.orders), True, (0, 0, 0))
+        sauce_txtsurf = order_event_font.render(customer.order.sauce, True, (0, 0, 0))
+        cheese_txtsurf = order_event_font.render(customer.order.cheese, True, (0, 0, 0))
+        temp_string = ", ".join(customer.order.toppings)
+        toppings_txtsurf = order_event_font2.render(temp_string, True, (0, 0, 0))
+        slices_txtsurf = order_event_font.render("Slices: " + str(customer.order.slices), True, (0, 0, 0))
+        screen.blit(num_txtsurf, (WIDTH * .65, HEIGHT * .1))
+        screen.blit(sauce_txtsurf, (WIDTH*.65, HEIGHT*.45))
+        screen.blit(cheese_txtsurf, (WIDTH * .65, HEIGHT * .6))
+        screen.blit(toppings_txtsurf, (WIDTH * .65, HEIGHT * .3))
+        screen.blit(slices_txtsurf, (WIDTH * .65, HEIGHT * .75))
+    return customer
+
+# Order Event Graphics
 order_event_image = pygame.image.load("graphics/order_event.png")
 order_event_font = pygame.font.SysFont("Arial", 50)
 order_event_font2 = pygame.font.SysFont("Arial", 25)
@@ -61,25 +101,7 @@ def order_event(customer):
     screen.blit(order_event_image, (0, -10))
     screen.blit(customer.image, (WIDTH*.1, HEIGHT*.05))
     customer.image = pygame.transform.scale(customer.image, (474, 1095))
-    # Fix Whatever the hell this is
-    try:
-        customer.order.image = pygame.transform.scale(customer.order.image, (400, 700))
-    except:
-        customer.order = generate_order.order()
-        customer.order.image = pygame.transform.scale(customer.order.image, (400, 700))
-    screen.blit(customer.order.image, (WIDTH*.6, HEIGHT*.05))
-    # Order Items
-    num_txtsurf = order_event_font.render("Order " + str(generate_order.order.orders), True, (0, 0, 0))
-    sauce_txtsurf = order_event_font.render(customer.order.sauce, True, (0, 0, 0))
-    cheese_txtsurf = order_event_font.render(customer.order.cheese, True, (0, 0, 0))
-    temp_string = ", ".join(customer.order.toppings)
-    toppings_txtsurf = order_event_font2.render(temp_string, True, (0, 0, 0))
-    slices_txtsurf = order_event_font.render("Slices: " + str(customer.order.slices), True, (0, 0, 0))
-    screen.blit(num_txtsurf, (WIDTH * .65, HEIGHT * .1))
-    screen.blit(sauce_txtsurf, (WIDTH*.65, HEIGHT*.45))
-    screen.blit(cheese_txtsurf, (WIDTH * .65, HEIGHT * .6))
-    screen.blit(toppings_txtsurf, (WIDTH * .65, HEIGHT * .3))
-    screen.blit(slices_txtsurf, (WIDTH * .65, HEIGHT * .75))
+    customer = draw_ticket(customer, 2)
     return customer
 
 # Make Graphics

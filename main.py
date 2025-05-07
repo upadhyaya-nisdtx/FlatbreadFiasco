@@ -117,6 +117,7 @@ while run:
             ordering_customers.append(temp)
             time_1 = pygame.time.get_ticks()
             customer_time = 10000
+        # Section Checks
         if show_order:
             selected = False
             sections.order_screen(ordering_customers,waiting_customers)
@@ -161,7 +162,7 @@ while run:
         elif show_settings:
             quit_button = sections.settings_screen()
         if not show_order_event:
-            toggles = sections.toggle()
+            toggles = sections.toggle(waiting_customers)
 
     # Mouse Position
     pos = pygame.mouse.get_pos()
