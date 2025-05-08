@@ -146,18 +146,32 @@ def bake_screen(current_pizza, selected=False):
 
 # Deliver Graphics
 deliver_screen_image = pygame.image.load("graphics/deliver_screen.png")
+invisible_surface_2 = pygame.Surface((WIDTH * .12, HEIGHT *.3), pygame.SRCALPHA)
+invisible_rect_2 = pygame.Rect(WIDTH * 0.12, HEIGHT * 0.12, WIDTH * .12, HEIGHT *.3)
+invisible_surface_2.fill((0, 0, 0, 0))
 def deliver_screen():
     screen.fill((0, 0, 0, 0))
     screen.blit(deliver_screen_image, (0, 0))
+    screen.blit(invisible_surface_2, (WIDTH * 0.12, HEIGHT * 0.12))
+    return  invisible_surface_2, invisible_rect_2
 
 # Settings Graphics
 settings_screen_image = pygame.image.load("graphics/settings_screen.png")
 quit_title = pygame.font.SysFont("Arial", 50)
 quit_txtsurf = quit_title.render("Quit", True, (0, 0, 0))
 quit_button = pygame.Rect((WIDTH*.05, HEIGHT*.25, 50, 50))
+tut_txtsurf = quit_title.render("Tutorial", True, (0, 0, 0))
+tut_button = pygame.Rect((WIDTH*.05, HEIGHT*.35, 50, 50))
 def settings_screen():
     screen.fill((0, 0, 0, 0))
     screen.blit(settings_screen_image, (0, 50))
     screen.blit(quit_txtsurf, (WIDTH*.1, HEIGHT*.25))
     pygame.draw.rect(screen, (255, 255, 255, 255), quit_button, 100, 100)
-    return quit_button
+    screen.blit(tut_txtsurf, (WIDTH*.1, HEIGHT*.35))
+    pygame.draw.rect(screen, (255, 255, 255, 255), tut_button, 100, 100)
+    return quit_button, tut_button
+
+tutorial_image = pygame.image.load("graphics/tutorial_image.png")
+def show_tutorial():
+    screen.blit(tutorial_image, (0, 50))
+    print("fix this")

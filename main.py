@@ -46,7 +46,7 @@ def visible_station(show_variable, boolean=True):
 # Misc
 doorbell_sound = pygame.mixer.Sound("audio/doorbell.mp3")
 toggles = sections.toggle()
-quit_button = sections.settings_screen()
+quit_button, tut_button = sections.settings_screen()
 ordering_customers = []
 waiting_customers = []
 showing_customer = None
@@ -64,6 +64,11 @@ bake_x = WIDTH * .08
 bake_y = HEIGHT * .7
 invisible_surface = None
 invisible_rect = None
+invisible_surface_2 = None
+invisible_rect_2 = None
+deliver_items = []
+invisible_rect_2 = None
+invisible_surface_2 = None
 
 """
 only allow 1 save file, override when making new save
@@ -82,7 +87,7 @@ def save(filename, 1, 2, 3):
 def reset():
     global ordering_customers, waiting_customers, showing_customer, time_1, time_2, time_3, temp_customer
     global current_pizza, pizza_list, selected, available_items, bake_x, bake_y, customer_time, invisible_surface
-    global invisible_rect
+    global invisible_rect, deliver_items, invisible_rect_2, invisible_surface_2
     ordering_customers = []
     waiting_customers = []
     showing_customer = None
@@ -99,6 +104,9 @@ def reset():
     customer_time = 2000
     invisible_surface = None
     invisible_rect = None
+    invisible_surface_2 = None
+    invisible_rect_2 = None
+    deliver_items = []
 
 bg_music.play(loops=-1)
 # Main Loop
@@ -153,14 +161,16 @@ while run:
                 available_items = current_pizza.draw_pizza()
         elif show_deliver:
             selected = False
-            sections.deliver_screen()
+            deliver_items = sections.deliver_screen()
+            invisible_surface_2 = deliver_items[0]
+            invisible_rect_2 = deliver_items[1]
             if current_pizza != None:
                 current_pizza.change_position(WIDTH * .52, WIDTH * .375, 275)
                 current_pizza.base.move(WIDTH * .52, WIDTH * .375)
                 current_pizza.base.radius = 275
                 available_items = current_pizza.draw_pizza(400)
         elif show_settings:
-            quit_button = sections.settings_screen()
+            quit_button, tut_button = sections.settings_screen()
         if not show_order_event:
             toggles = sections.toggle(waiting_customers)
 
@@ -202,12 +212,15 @@ while run:
                     show_deliver = visible_station(show_deliver)
                 elif toggles[4].get_rect(topleft=(WIDTH*.8, 0)).collidepoint(pos):
                     show_settings = visible_station(show_settings)
+
                 # Settings Check
                 if show_settings:
                     if quit_button.collidepoint(pos):
                         reset()
                         show_settings = visible_station(show_settings, False)
                         show_title = True
+                    elif tut_button.collidepoint(pos):
+                        sections.show_tutorial()
                 # Customer Click Check
                 elif show_order:
                     for item in ordering_customers:
@@ -242,6 +255,13 @@ while run:
                     if current_pizza != None:
                         if current_pizza.base.get_rect().collidepoint(pos):
                             selected = True
+                elif show_deliver:
+                    if invisible_rect_2 != None:
+                        if invisible_rect_2.collidepoint(pos):
+                            if len(waiting_customers) != 0:
+                                print("delivered!")
+                                current_pizza = None
+                                del waiting_customers[0]
         # Drag Check
         elif event.type == pygame.MOUSEBUTTONUP:
             # If GAME is visible
