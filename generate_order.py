@@ -18,6 +18,7 @@ class order():
     def __init__(self):
         num = random.randint(0, 4)
         order.orders += 1
+        self.order_num = order.orders
         temp_list = []
         for i in range(num):
             temp_item = random.choice(toppings)

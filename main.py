@@ -31,15 +31,17 @@ show_bake = False
 show_deliver = False
 show_settings = False
 show_order_event = False
+show_tutorial = False
 
 def visible_station(show_variable, boolean=True):
-    global show_order, show_make, show_bake, show_deliver, show_settings, show_order_event
+    global show_order, show_make, show_bake, show_deliver, show_settings, show_order_event, show_tutorial
     show_order = False
     show_make = False
     show_bake = False
     show_deliver = False
     show_settings = False
     show_order_event = False
+    show_tutorial = False
     show_variable = boolean
     return show_variable
 
@@ -171,6 +173,8 @@ while run:
                 available_items = current_pizza.draw_pizza(400)
         elif show_settings:
             quit_button, tut_button = sections.settings_screen()
+        elif show_tutorial:
+            sections.show_tutorial()
         if not show_order_event:
             toggles = sections.toggle(waiting_customers)
 
@@ -220,7 +224,7 @@ while run:
                         show_settings = visible_station(show_settings, False)
                         show_title = True
                     elif tut_button.collidepoint(pos):
-                        sections.show_tutorial()
+                        show_tutorial = visible_station(show_tutorial)
                 # Customer Click Check
                 elif show_order:
                     for item in ordering_customers:
@@ -260,8 +264,13 @@ while run:
                         if invisible_rect_2.collidepoint(pos):
                             if len(waiting_customers) != 0:
                                 print("delivered!")
+                                bake_x = WIDTH * .08
+                                bake_y = HEIGHT * .7
                                 current_pizza = None
                                 del waiting_customers[0]
+                elif show_tutorial:
+                    show_settings = visible_station(show_settings)
+
         # Drag Check
         elif event.type == pygame.MOUSEBUTTONUP:
             # If GAME is visible

@@ -68,7 +68,7 @@ def draw_ticket(customer, section, interval=0, num=0):
             customer.order.image = pygame.transform.scale(customer.order.image, (50, 100))
         screen.blit(customer.order.image, (WIDTH * interval, HEIGHT * .01))
         # Order Items
-        num_txtsurf = order_event_font.render(str(num), True, (0, 0, 0))
+        num_txtsurf = order_event_font.render(str(customer.order.order_num), True, (0, 0, 0))
         screen.blit(num_txtsurf, ((WIDTH * interval) + .03, HEIGHT * .02))
     # Order Event View
     elif section == 2:
@@ -173,5 +173,5 @@ def settings_screen():
 
 tutorial_image = pygame.image.load("graphics/tutorial_image.png")
 def show_tutorial():
+    screen.fill((0, 0, 0, 0))
     screen.blit(tutorial_image, (0, 50))
-    print("fix this")
