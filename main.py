@@ -71,21 +71,9 @@ invisible_rect_2 = None
 deliver_items = []
 invisible_rect_2 = None
 invisible_surface_2 = None
+deliver_sound = pygame.mixer.Sound("audio/roblox pizza.mp3")
+bake_sound = pygame.mixer.Sound("audio/oven ding.mp3")
 
-"""
-only allow 1 save file, override when making new save
-def save(filename, 1, 2, 3):
-
-        dictionary_save = {
-            "filename": filename,
-            "item1": 1,
-            "item2": 2,
-            "item3": 3
-        }
-        json_object = json.dumps(dictionary_save, indent=4)
-        with open(filename, "w") as saved_file:
-            saved_file.write(json_object)
-"""
 def reset():
     global ordering_customers, waiting_customers, showing_customer, time_1, time_2, time_3, temp_customer
     global current_pizza, pizza_list, selected, available_items, bake_x, bake_y, customer_time, invisible_surface
@@ -263,7 +251,7 @@ while run:
                     if invisible_rect_2 != None:
                         if invisible_rect_2.collidepoint(pos):
                             if len(waiting_customers) != 0:
-                                print("delivered!")
+                                deliver_sound.play()
                                 bake_x = WIDTH * .08
                                 bake_y = HEIGHT * .7
                                 current_pizza = None
@@ -278,7 +266,8 @@ while run:
                 if show_bake:
                     if current_pizza is not None:
                         selected = False
-                        if current_pizza.base.get_rect().colliderect(invisible_rect):
+                        if current_pizza.base.get_rect().colliderect(invisible_rect) and not current_pizza.base.baked:
+                            bake_sound.play()
                             current_pizza.base.baked = True
 
 
