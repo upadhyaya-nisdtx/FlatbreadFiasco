@@ -1,7 +1,6 @@
 # Stations
 import pygame
 import customer
-import pizza
 import generate_order
 
 # Basic Setup
