@@ -17,6 +17,11 @@ load_button = pygame.image.load("graphics/load_game_button.png")
 load_button = pygame.transform.scale(load_button, (300, 300))
 
 def title():
+    """
+    Displays title graphics
+    -----
+    returns: 2 buttons that can be pressed by the user
+    """
     global new_button, load_button
     screen.fill((0, 0, 0, 0))
     screen.blit(title_screen_image, (0, 0))
@@ -36,7 +41,13 @@ deliver_toggle = pygame.image.load("graphics/deliver_screen_toggle.png")
 deliver_toggle = pygame.transform.scale(deliver_toggle, (100, 100))
 settings_toggle = pygame.image.load("graphics/settings_toggle.png")
 settings_toggle = pygame.transform.scale(settings_toggle, (100, 100))
+
 def toggle(customer_list=[]):
+    """
+    Displays toggle bar at the top of the screen
+    -----
+    returns: 5 buttons that can be pressed by the user
+    """
     screen.blit(toggle_bar, (0, -150))
     screen.blit(order_toggle, (WIDTH*.3, 0))
     screen.blit(create_toggle, (WIDTH*.4, 0))
@@ -51,13 +62,26 @@ def toggle(customer_list=[]):
 
 # Order Graphics
 order_screen_image = pygame.image.load("graphics/order_screen.jpg")
+
 def order_screen(customer_list_1, customer_list_2):
+    """
+    Displays order screen graphics
+    -----
+    returns: None
+    """
     screen.fill((0, 0, 0, 0))
     screen.blit(order_screen_image, (0, 0))
     customer.place_customers(customer_list_1, customer_list_2)
 
 # Ticket Graphics
 def draw_ticket(customer, section, interval=0, num=0):
+    """
+    Displays tickets in 2 different contexts.
+    Displays ticket with order information during order event.
+    Displays tickets representing current orders in the corner of the screen.
+    -----
+    returns: customer parameter
+    """
     # Small View
     if section == 1:
         try:
@@ -95,7 +119,13 @@ def draw_ticket(customer, section, interval=0, num=0):
 order_event_image = pygame.image.load("graphics/order_event.png")
 order_event_font = pygame.font.SysFont("Arial", 50)
 order_event_font2 = pygame.font.SysFont("Arial", 25)
+
 def order_event(customer):
+    """
+    Displays order event graphics
+    -----
+    returns: customer parameter
+    """
     screen.fill((0, 0, 0, 0))
     screen.blit(order_event_image, (0, -10))
     screen.blit(customer.image, (WIDTH*.1, HEIGHT*.05))
@@ -113,7 +143,13 @@ pepperoni_button = pygame.image.load("graphics/pepperoni_button.png")
 mushroom_button = pygame.image.load("graphics/mushroom_button.png")
 onion_button = pygame.image.load("graphics/onion_button.png")
 pineapple_button = pygame.image.load("graphics/pineapple_button.png")
+
 def make_screen():
+    """
+    Displays make screen graphics
+    -----
+    returns: 7 buttons that can be pressed by the user
+    """
     screen.fill((0, 0, 0, 0))
     screen.blit(make_screen_image, (0, 0))
     screen.blit(gen_pizza_toggle, (WIDTH * .75, HEIGHT * .4))
@@ -132,7 +168,13 @@ bake_screen_image = pygame.image.load("graphics/bake_screen.png")
 invisible_surface = pygame.Surface((WIDTH * .355, HEIGHT *.535), pygame.SRCALPHA)
 invisible_rect = pygame.Rect(WIDTH * 0.31, HEIGHT * 0.39, WIDTH * .355, HEIGHT *.535)
 invisible_surface.fill((0, 0, 0, 0))
+
 def bake_screen(current_pizza, selected=False):
+    """
+    Displays bake screen graphics
+    -----
+    returns: current_pizza parameter and 2 invisible objects to detect pizza object collision
+    """
     screen.fill((0, 0, 0, 0))
     screen.blit(bake_screen_image, (0, 0))
     screen.blit(invisible_surface, (WIDTH * 0.31, HEIGHT * 0.39))
@@ -148,7 +190,13 @@ deliver_screen_image = pygame.image.load("graphics/deliver_screen.png")
 invisible_surface_2 = pygame.Surface((WIDTH * .12, HEIGHT *.3), pygame.SRCALPHA)
 invisible_rect_2 = pygame.Rect(WIDTH * 0.12, HEIGHT * 0.12, WIDTH * .12, HEIGHT *.3)
 invisible_surface_2.fill((0, 0, 0, 0))
+
 def deliver_screen():
+    """
+    Displays deliver_screen graphics
+    -----
+    returns: 2 invisible objects to detect mouse collision
+    """
     screen.fill((0, 0, 0, 0))
     screen.blit(deliver_screen_image, (0, 0))
     screen.blit(invisible_surface_2, (WIDTH * 0.12, HEIGHT * 0.12))
@@ -161,7 +209,13 @@ quit_txtsurf = quit_title.render("Quit", True, (0, 0, 0))
 quit_button = pygame.Rect((WIDTH*.05, HEIGHT*.25, 50, 50))
 tut_txtsurf = quit_title.render("Tutorial", True, (0, 0, 0))
 tut_button = pygame.Rect((WIDTH*.05, HEIGHT*.35, 50, 50))
+
 def settings_screen():
+    """
+    Displays settings_screen graphics
+    -----
+    returns: 2 buttons that can be pressed by the users
+    """
     screen.fill((0, 0, 0, 0))
     screen.blit(settings_screen_image, (0, 50))
     screen.blit(quit_txtsurf, (WIDTH*.1, HEIGHT*.25))
@@ -170,7 +224,14 @@ def settings_screen():
     pygame.draw.rect(screen, (255, 255, 255, 255), tut_button, 100, 100)
     return quit_button, tut_button
 
+# Tutorial Graphics
 tutorial_image = pygame.image.load("graphics/tutorial_image.png")
+
 def show_tutorial():
+    """
+    Displays tutorial graphics
+    -----
+    returns: None
+    """
     screen.fill((0, 0, 0, 0))
     screen.blit(tutorial_image, (0, 50))

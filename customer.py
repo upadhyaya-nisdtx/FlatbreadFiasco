@@ -11,12 +11,28 @@ HEIGHT = 800
 screen = pygame.display.set_mode((WIDTH, HEIGHT))
 
 def place_customers(customer_list_1, customer_list_2):
+    """
+    Places customers based on the list they are in
+    ----
+    returns: None
+    """
     for item in customer_list_1:
         screen.blit(item.image, item.pos)
     for item in customer_list_2:
         screen.blit(item.image, item.pos)
 
 class customer():
+    """
+    Creates a customer object
+    ----
+    __init__(): constructor.
+    change_index: changes index value
+    index: tracks position in dir_list
+    dir_list: list of customer graphics
+    set_x(): changes x value of ticket image
+    set_y(): changes y value of ticket image
+    set_order(): sets order if there is no order
+    """
     index = 0
     dir_list = os.listdir("customer_graphics/")
     random.shuffle(dir_list)

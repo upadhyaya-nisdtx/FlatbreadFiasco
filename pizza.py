@@ -8,6 +8,14 @@ HEIGHT = 800
 screen = pygame.display.set_mode((WIDTH, HEIGHT))
 
 class pizza_base:
+    """
+    Creates a base for the pizza class
+    ----
+    __init__(): constructor. Creates a base for the pizza using x, y, and radius values.
+    draw(): draws pizza base based on status of self.baked.
+    move(): moves base based on dx and dy values.
+    get_rect(): returns a "rect" for this value, similar to rect function in pygame.
+    """
     def __init__(self, x, y, radius):
         self.x = x
         self.y = y
@@ -30,7 +38,14 @@ class pizza_base:
         return pygame.Rect(self.x - self.radius, self.y - self.radius, self.radius * 2, self.radius * 2)
 
 class pizza():
-
+    """
+    Creates a pizza object
+    ----
+    __init__(): constructor
+    draw_pizza(): draws pizza based on self.base and any toppings in self.toppings
+    add_topping(): adds a topping to self.toppings
+    change_position(): moves pizza to new location based on x, y, and radius parameters.
+    """
     def __init__(self, num=None, cheese=None, sauce=None):
         self.num = num
         self.cheese = cheese

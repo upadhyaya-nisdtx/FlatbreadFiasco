@@ -75,8 +75,6 @@ invisible_rect = None
 invisible_surface_2 = None
 invisible_rect_2 = None
 deliver_items = []
-invisible_rect_2 = None
-invisible_surface_2 = None
 deliver_sound = pygame.mixer.Sound("audio/roblox pizza.mp3")
 bake_sound = pygame.mixer.Sound("audio/oven ding.mp3")
 

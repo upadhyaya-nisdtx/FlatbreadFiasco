@@ -8,11 +8,18 @@ WIDTH = 1200
 HEIGHT = 800
 screen = pygame.display.set_mode((WIDTH, HEIGHT))
 
+# Lists for order generation
 toppings = ["Pepperoni", "Mushroom", "Onion", "Pineapple"]
 sauces = ["Tomato Sauce", "Alfredo Sauce", "BBQ Sauce"]
 cheeses = ["Mozzarella", "Parmesan", "Provolone", "Cheddar"]
 
 class order():
+    """
+    Creates an order
+    ----
+    __init__(): constructor. Randomly generates an order based on lists.
+    orders: keeps track of the number of orders made
+    """
     orders = 0
 
     def __init__(self):
